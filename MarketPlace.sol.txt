@@ -1,0 +1,26 @@
+pragma solidity ^0.8.0;
+
+import "./MYERC20.sol";
+import "./MYERC721.sol";
+
+contract MarketPlace is MYERC20  {
+    
+    MYERC20 public ERC20Token;
+    MYERC721 public ERC721Token;
+    
+ constructor(MYERC20 _ERC20Token, MYERC721 _ERC721Token)  {
+        ERC20Token = _ERC20Token;
+        ERC721Token = _ERC721Token;
+    }
+    
+function BuyNFT(uint256 _price) public payable {
+        ERC20Token.transferFrom(msg.sender,address(this),_price);
+        
+    }
+    
+function SellNFT(uint256 _tokenID) public{
+        ERC721Token.approve(address(this),_tokenID);
+        ERC721Token.safeTransferFrom(address(this),msg.sender, _tokenID);
+    }
+    
+}
